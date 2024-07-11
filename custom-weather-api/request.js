@@ -8,7 +8,7 @@ const {
   decodeResult,
   FulfillmentCode,
 } = require("@chainlink/functions-toolkit");
-const functionsConsumerAbi = require("../../abi/functionsClient.json");
+const functionsConsumerAbi = require("../abi/functionsClient.json");
 const ethers = require("ethers");
 const { trace } = require("console");
 require("@chainlink/env-enc").config();

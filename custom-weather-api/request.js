@@ -11,7 +11,9 @@ const {
 const functionsConsumerAbi = require("../abi/functionsClient.json");
 const ethers = require("ethers");
 const { trace } = require("console");
-require("@chainlink/env-enc").config();
+
+const secureEnv = require('secure-env');
+global.env = secureEnv({ path: '.env.chainlink.enc', secret: 'chainlink' });
 
 const GREEN = "\u001b[32m";
 const RESET = "\u001b[0m";
@@ -50,17 +52,17 @@ const makeRequestSepolia = async () => {
     .toString();
 
   const args = ["Missoula", "imperial"];
-  const secrets = { apiKey: process.env.TOMORROW_IO_API_KEY };
+  const secrets = { apiKey: global.env.TOMORROW_IO_API_KEY };
   const secretsUrls = [
     "https://chainlink-functions-offchain.s3.amazonaws.com/tomorrow-io.json",
   ]; const gasLimit = 300000;
 
-  const privateKey = process.env.PRIVATE_KEY; if (!privateKey)
+  const privateKey = global.env.PRIVATE_KEY; if (!privateKey)
     throw new Error(
       "private key not provided - check your environment variables"
     );
 
-  const rpcUrl = process.env.ETHEREUM_SEPOLIA_RPC_URL;
+  const rpcUrl = global.env.ETHEREUM_SEPOLIA_RPC_URL;
   if (!rpcUrl)
     throw new Error(`rpcUrl not provided  - check your environment variables`);
 
@@ -234,7 +236,7 @@ makeRequestAndOutput().catch((e) => {
 });
 
 async function fetchEthereumTransaction(hash) {
-  const url = `https://eth-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`;
+  const url = `https://eth-sepolia.g.alchemy.com/v2/${global.env.ALCHEMY_API_KEY}`;
   const body = {
     id: 1,
     jsonrpc: '2.0',
@@ -281,7 +283,7 @@ async function fetchETHPriceInUSD() {
   const url = 'https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest';
   const symbol = 'ETH';
   const convert = 'USD';
-  const apiKey = process.env.COINMARKETCAP_API_KEY;
+  const apiKey = global.env.COINMARKETCAP_API_KEY;
   const fullUrl = `${url}?CMC_PRO_API_KEY=${apiKey}&symbol=${symbol}&convert=${convert}`;
 
   try {
@@ -309,7 +311,7 @@ async function fetchETHPriceInUSD() {
 async function fetchLINKPriceInUSD() {
   const url = 'https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest';
   const symbol = 'LINK';
-  const apiKey = process.env.COINMARKETCAP_API_KEY;
+  const apiKey = global.env.COINMARKETCAP_API_KEY;
   const fullUrl = `${url}?CMC_PRO_API_KEY=${apiKey}&symbol=${symbol}`;
 
   try {

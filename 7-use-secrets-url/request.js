@@ -11,7 +11,9 @@ const {
 } = require("@chainlink/functions-toolkit");
 const functionsConsumerAbi = require("../abi/functionsClient.json");
 const ethers = require("ethers");
-require("@chainlink/env-enc").config();
+
+const secureEnv = require('secure-env');
+global.env = secureEnv({ path: '.env.chainlink.enc', secret: 'chainlink' });
 
 const consumerAddress = "0x08D51E9C1d854a2c0d793C6e507d5F85b8950040"; // REPLACE this with your Functions consumer address
 const subscriptionId = 3176; // REPLACE this with your subscription ID
@@ -29,20 +31,20 @@ const makeRequestSepolia = async () => {
     .toString();
 
   const args = ["1", "USD"];
-  const secrets = { apiKey: process.env.COINMARKETCAP_API_KEY }; // Only used for simulation in this example
+  const secrets = { apiKey: global.env.COINMARKETCAP_API_KEY }; // Only used for simulation in this example
   const secretsUrls = [
     "https://chainlink-functions-offchain.s3.amazonaws.com/coin-market-cap.json",
   ]; // REPLACE WITH YOUR VALUES after running gen-offchain-secrets.js and uploading offchain-secrets.json to a public URL
   const gasLimit = 300000;
 
   // Initialize ethers signer and provider to interact with the contracts onchain
-  const privateKey = process.env.PRIVATE_KEY; // fetch PRIVATE_KEY
+  const privateKey = global.env.PRIVATE_KEY; // fetch PRIVATE_KEY
   if (!privateKey)
     throw new Error(
       "private key not provided - check your environment variables"
     );
 
-  const rpcUrl = process.env.ETHEREUM_SEPOLIA_RPC_URL; // fetch Sepolia RPC URL
+  const rpcUrl = global.env.ETHEREUM_SEPOLIA_RPC_URL; // fetch Sepolia RPC URL
 
   if (!rpcUrl)
     throw new Error(`rpcUrl not provided  - check your environment variables`);

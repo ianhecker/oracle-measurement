@@ -50,10 +50,6 @@ be sure to update `BASIC_FEED_CONTRACT_ADDRESS` with the new address you receive
 
 	* Add your new contract address to the `.env` file
 
-	```bash
-	sed -i 's/BASIC_FEED_CONTRACT_ADDRESS = .*/BASIC_FEED_CONTRACT_ADDRESS = 0x.../' .env
-	```
-
 6. To run
 
 ```bash

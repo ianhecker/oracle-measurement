@@ -14,7 +14,8 @@ cd basic-feed
 bun install
 ```
 
-3. Setup the `.env` file and add your private key
+3. Setup the `.env` file inside of the `basic-feed` directory, and add your
+private key
 
 ```bash
 cat << EOF > .env

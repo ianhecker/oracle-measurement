@@ -4,15 +4,19 @@ import { OracleMeasurement } from "./oracle-measurements";
 // import * as ethers from "ethers";
 // import * as fs from "fs";
 
-// const rpcURL = process.env.ALCHEMY_RPC_URL as string;
-// if (!rpcURL) {
-//   throw new Error("Missing ALCHEMY_RPC_URL");
-// }
+const rpcURL = process.env.ALCHEMY_RPC_URL as string;
+if (!rpcURL) {
+  throw new Error("Missing ALCHEMY_RPC_URL");
+}
 
 // const chainId = process.env.CHAIN_ID as string;
 // if (!chainId) {
 //   throw new Error("Missing CHAIN_ID");
-// }
+
+const coinmarketcapAPIKey = process.env.COINMARKETCAP_API_KEY as string;
+if (!coinmarketcapAPIKey) {
+  throw new Error("Missing CHAIN_ID");
+}
 
 // const address = process.env.BASIC_FEED_CONTRACT_ADDRESS as string;
 // if (!address) {
@@ -23,7 +27,6 @@ import { OracleMeasurement } from "./oracle-measurements";
 // if (!privateKey) {
 //   throw new Error("Missing PRIVATE_KEY");
 // }
-
 
 const measure = async () => {
   const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -51,6 +54,20 @@ const displayMeasurements = async () => {
 
   om.LogDateAndTime();
   om.LogDuration(start, end);
+  console.log();
+
+  let txHash = "0x31f46577bd0a889618b5ffa08df58b995eb063f580f427d4223850cd5608b8bc";
+
+  const tx = await om.FetchEthTxnGasStats(rpcURL, txHash);
+
+  om.LogTransactionHash(txHash);
+  om.LogEthGasStats(tx.gasUsed, tx.effectiveGasPrice, tx.ethUsed);
+  console.log();
+
+  const ethPriceInUSD = await om.FetchETHPriceInUSD(coinmarketcapAPIKey);
+
+  om.LogTotalCostsInETH(tx.ethUsed, ethPriceInUSD);
+  om.LogTotalCostsInUSD(tx.ethUsed, ethPriceInUSD);
 };
 
 displayMeasurements().catch((e) => {

@@ -1,7 +1,11 @@
-interface GasStats {
+interface TxnGasStats {
   gasUsed: number
   effectiveGasPrice: number
   ethUsed: number
+}
+
+interface TxnGeneralStats {
+  network: string
 }
 
 export class OracleMeasurement {
@@ -68,7 +72,11 @@ export class OracleMeasurement {
     this.log(['Transaction Hash:', hash]);
   }
 
-  async FetchEthTxnGasStats(url: string, hash: string): Promise<GasStats> {
+  LogNetwork(chainId: string) {
+    this.log(['Network:', this.getNetwork(chainId)])
+  }
+
+  async FetchEthTxnGasStats(url: string, hash: string): Promise<TxnGasStats> {
     const body = {
       id: 1,
       jsonrpc: '2.0',
@@ -133,4 +141,16 @@ export class OracleMeasurement {
       return -1;
     }
   }
+
+  getNetwork(chainId: string): string {
+    switch (chainId) {
+      case "421614": {
+        return "Arbitrum Sepolia"
+      }
+      default: {
+        return "unknown chain id";
+      }
+    }
+  }
+
 }

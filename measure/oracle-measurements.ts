@@ -1,6 +1,6 @@
 interface TxnGasStats {
   gasUsed: number
-  effectiveGasPrice: number
+  gasFeeInGwei: number
   ethUsed: number
 }
 
@@ -10,7 +10,7 @@ interface TxnGeneralStats {
 
 export class OracleMeasurement {
 
-  log(keyValuePairs: string[]) {
+  Log(keyValuePairs: string[]) {
 
     const GREEN = "\u001b[32m";
     const RESET = "\u001b[0m";
@@ -29,10 +29,10 @@ export class OracleMeasurement {
     const now = new Date();
     const mst = now.toLocaleString('en-US', { timeZone: 'America/Denver' })
 
-    this.log(['Date & Time:', mst + ' MST']);
+    this.Log(['Date & Time:', mst + ' MST']);
   }
 
-  LogDuration(start: number, end: number) {
+  LogTxnDuration(start: number, end: number) {
     let ms = end - start;
 
     const minutes = Math.floor(ms / 60000);
@@ -43,13 +43,13 @@ export class OracleMeasurement {
 
     const time = minutes + "m" + seconds + "." + milliseconds + 's';
 
-    this.log(['Time Elapsed:', time]);
+    this.Log(['Txn Duration:', time]);
   }
 
   LogTotalCostsInETH(ethUsed: number, ethPriceInUSD: number) {
     const ethCostInUSD = ethUsed * ethPriceInUSD;
 
-    this.log([
+    this.Log([
       'Current Mainnet ETH/USD Price:', '$' + ethPriceInUSD.toFixed(2),
       '* ETH Used:', ethUsed.toFixed(10),
       '=', "$" + ethCostInUSD.toFixed(2),
@@ -59,21 +59,27 @@ export class OracleMeasurement {
   LogTotalCostsInUSD(ethUsed: number, ethPriceInUSD: number) {
     const ethCostInUSD = ethUsed * ethPriceInUSD;
 
-    this.log(['Total Cost in USD:', '$' + ethCostInUSD.toFixed(2)]);
+    this.Log(['Total Cost in USD:', '$' + ethCostInUSD.toFixed(2)]);
   }
 
-  LogEthGasStats(gasUsed: number, effectiveGasPrice: number, ethUsed: number) {
-    this.log(['Gas Used:', gasUsed + ""]);
-    this.log(['Gas Price:', effectiveGasPrice + ' Gwei']);
-    this.log(['ETH Used:', ethUsed.toFixed(10)]);
+  LogEthGasStats(gasUsed: number, gasFeeInGwei: number, ethUsed: number) {
+    this.Log(['Gas Used:', gasUsed + ""]);
+    this.Log(['Gas Price:', gasFeeInGwei + ' Gwei']);
+    this.Log(['ETH Used:', ethUsed.toFixed(10)]);
   }
 
   LogTransactionHash(hash: string) {
-    this.log(['Transaction Hash:', hash]);
+    this.Log(['Transaction Hash:', hash]);
   }
 
   LogNetwork(chainId: string) {
-    this.log(['Network:', this.getNetwork(chainId)])
+    this.Log(['Network:', this.getNetwork(chainId)])
+  }
+
+  LogUNIPriceInUSD(n: bigint) {
+    const divisor = BigInt(1000000000000000000)
+    const USD = Number(n * 100n / divisor) / 100
+    this.Log(['UNI/USD Price:', "$" + USD])
   }
 
   async FetchEthTxnGasStats(url: string, hash: string): Promise<TxnGasStats> {
@@ -103,14 +109,14 @@ export class OracleMeasurement {
       const effectiveGasPriceHex = data.result.effectiveGasPrice;
 
       const gasUsed = parseInt(gasUsedHex, 16);
-      const effectiveGasPrice = parseInt(effectiveGasPriceHex, 16) / 1000000000;
-      const ethUsed = (gasUsed * (effectiveGasPrice / 1000000000));
+      const gasFeeInGwei = parseInt(effectiveGasPriceHex, 16) / 1000000000;
+      const ethUsed = (gasUsed * (gasFeeInGwei / 1000000000));
 
-      return { gasUsed, effectiveGasPrice, ethUsed };
+      return { gasUsed, gasFeeInGwei, ethUsed };
 
     } catch (error) {
       console.error('Error fetching data:', error);
-      return { gasUsed: 0, effectiveGasPrice: 0, ethUsed: 0 };
+      return { gasUsed: 0, gasFeeInGwei: 0, ethUsed: 0 };
     }
   }
 
@@ -152,5 +158,4 @@ export class OracleMeasurement {
       }
     }
   }
-
 }

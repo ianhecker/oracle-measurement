@@ -4,11 +4,6 @@ import { CrossbarClient } from "@switchboard-xyz/on-demand";
 import * as ethers from "ethers";
 import * as fs from "fs";
 
-const rpcURL = process.env.ALCHEMY_RPC_URL as string;
-if (!rpcURL) {
-  throw new Error("Missing ALCHEMY_RPC_URL");
-}
-
 const chainId = process.env.CHAIN_ID as string;
 if (!chainId) {
   throw new Error("Missing CHAIN_ID");
@@ -19,14 +14,19 @@ if (!coinmarketcapAPIKey) {
   throw new Error("Missing CHAIN_ID");
 }
 
-const contractAddress = process.env.BASIC_FEED_CONTRACT_ADDRESS as string;
+const contractAddress = process.env.CONTRACT_ADDRESS as string;
 if (!contractAddress) {
-  throw new Error("Missing BASIC_FEED_CONTRACT_ADDRESS");
+  throw new Error("Missing CONTRACT_ADDRESS");
 }
 
 const privateKey = process.env.PRIVATE_KEY as string;
 if (!privateKey) {
   throw new Error("Missing PRIVATE_KEY");
+}
+
+const rpcURL = process.env.ALCHEMY_RPC_URL as string;
+if (!rpcURL) {
+  throw new Error("Missing ALCHEMY_RPC_URL");
 }
 
 const measure = async () => {
@@ -44,9 +44,11 @@ const measure = async () => {
 
   const contract = new ethers.Contract(contractAddress, ABI, signerWithProvider);
 
+  const aggregatorId = await contract.aggregatorId()
+
   const { encoded } = await crossbar.fetchEVMResults({
     chainId: chainId,
-    aggregatorIds: [await contract.aggregatorId()],
+    aggregatorIds: [aggregatorId],
   });
 
   const tx = await contract.getFeedData(encoded);
@@ -55,6 +57,7 @@ const measure = async () => {
   return {
     transactionHash: tx.hash,
     latestUNIPriceInUSD: latestPrice,
+    aggregatorId: aggregatorId
   }
 };
 
@@ -70,15 +73,25 @@ const displayMeasurements = async () => {
 
   let om = new OracleMeasurement();
 
+  om.Log(['Oracle:', 'Switchboard Data Feed logged On-Chain w/ Smart Contract']);
+  om.Log(['Data Feed:', 'Current UNI/USD Price']);
+  om.Log(['Contract Address:', contractAddress]);
+  om.Log(['Aggregator Feed ID:', measurements.aggregatorId]);
+  om.LogNetwork(chainId);
+  console.log();
+
   om.LogDateAndTime();
-  om.LogDuration(start, end);
+  om.LogTxnDuration(start, end);
   console.log();
 
   const tx = await om.FetchEthTxnGasStats(rpcURL, measurements.transactionHash);
 
   om.LogTransactionHash(measurements.transactionHash);
-  om.LogNetwork(chainId);
-  om.LogEthGasStats(tx.gasUsed, tx.effectiveGasPrice, tx.ethUsed);
+  om.LogEthGasStats(tx.gasUsed, tx.gasFeeInGwei, tx.ethUsed);
+  console.log();
+
+  om.Log(['On-Chain data:', 'Latest UNI/USD Price'])
+  om.LogUNIPriceInUSD(measurements.latestUNIPriceInUSD);
   console.log();
 
   const ethPriceInUSD = await om.FetchETHPriceInUSD(coinmarketcapAPIKey);

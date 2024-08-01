@@ -1,11 +1,11 @@
-# Basic Feed
+# Temperature Feed
 
-To run a basic data feed:
+To run data feed:
 
 1. Navigate into the folder
 
 ```bash
-cd basic-feed
+cd temperature-feed
 ```
 
 2. Install dependencies
@@ -14,7 +14,7 @@ cd basic-feed
 bun install
 ```
 
-3. Setup the `.env` file inside of the `basic-feed` directory, and add your
+3. Setup the `.env` file inside of the `temperature-feed` directory, and add your
 private key
 
 ```bash

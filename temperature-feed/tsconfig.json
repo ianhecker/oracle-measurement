@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    // Enable latest features
+    "lib": ["ESNext", "DOM"],
+    "target": "es2022",
+    "module": "node16",
+    "moduleDetection": "auto",
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "esModuleInterop": true,
+    // Use node16 or nodenext for modern module resolution
+    "moduleResolution": "node16",
+    "noEmit": true,
+    // Best practices
+    "strict": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+    // Some stricter flags (disabled by default)
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noPropertyAccessFromIndexSignature": false
+  },
+  "ts-node": {
+    "experimentalResolver": true
+  }
+}

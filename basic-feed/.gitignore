@@ -1,0 +1,5 @@
+.env
+artifacts/
+bun.lockb
+cache/
+node_modules

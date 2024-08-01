@@ -153,6 +153,9 @@ export class OracleMeasurement {
       case "421614": {
         return "Arbitrum Sepolia"
       }
+      case "42161": {
+        return "Arbitrum One"
+      }
       default: {
         return "unknown chain id";
       }

@@ -12,9 +12,9 @@ if (!chainId) {
   throw new Error("Missing CHAIN_ID");
 }
 
-const address = process.env.BASIC_FEED_CONTRACT_ADDRESS as string;
+const address = process.env.DEPLOYED_CONTRACT_ADDRESS as string;
 if (!address) {
-  throw new Error("Missing BASIC_FEED_CONTRACT_ADDRESS");
+  throw new Error("Missing DEPLOYED_CONTRACT_ADDRESS");
 }
 
 const privateKey = process.env.PRIVATE_KEY as string;

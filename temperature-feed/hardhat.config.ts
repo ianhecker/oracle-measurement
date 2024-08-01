@@ -8,8 +8,8 @@ if (!PRIVATE_KEY) {
   throw new Error("No private key provided");
 }
 
-const ALCHEMY_RPC_URL = process.env.ALCHEMY_RPC_URL;
-if (!ALCHEMY_RPC_URL) {
+const RPC_URL = process.env.RPC_URL;
+if (!RPC_URL) {
   throw new Error("No api key provided");
 }
 
@@ -17,7 +17,7 @@ const config: HardhatUserConfig = {
   solidity: "0.8.24",
   networks: {
     arbitrumOne: {
-      url: ALCHEMY_RPC_URL,
+      url: RPC_URL,
       accounts: [PRIVATE_KEY]
     }
   }

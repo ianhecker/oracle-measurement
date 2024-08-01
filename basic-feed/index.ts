@@ -2,19 +2,14 @@ import { CrossbarClient } from "@switchboard-xyz/on-demand";
 import * as ethers from "ethers";
 import * as fs from "fs";
 
-const rpcURL = process.env.ALCHEMY_RPC_URL as string;
-if (!rpcURL) {
-  throw new Error("Missing ALCHEMY_RPC_URL");
-}
-
 const chainId = process.env.CHAIN_ID as string;
 if (!chainId) {
   throw new Error("Missing CHAIN_ID");
 }
 
-const address = process.env.BASIC_FEED_CONTRACT_ADDRESS as string;
+const address = process.env.DEPLOYED_CONTRACT_ADDRESS as string;
 if (!address) {
-  throw new Error("Missing BASIC_FEED_CONTRACT_ADDRESS");
+  throw new Error("Missing DEPLOYED_CONTRACT_ADDRESS");
 }
 
 const privateKey = process.env.PRIVATE_KEY as string;
@@ -22,7 +17,10 @@ if (!privateKey) {
   throw new Error("Missing PRIVATE_KEY");
 }
 
-// const rpcURL = `"https://sepolia-rollup.arbitrum.io/rpc"`;
+const rpcURL = process.env.RPC_URL as string;
+if (!rpcURL) {
+  throw new Error("Missing RPC_URL");
+}
 
 const provider = new ethers.JsonRpcProvider(rpcURL);
 

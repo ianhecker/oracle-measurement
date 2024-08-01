@@ -14,9 +14,9 @@ if (!coinmarketcapAPIKey) {
   throw new Error("Missing CHAIN_ID");
 }
 
-const contractAddress = process.env.CONTRACT_ADDRESS as string;
+const contractAddress = process.env.DEPLOYED_CONTRACT_ADDRESS as string;
 if (!contractAddress) {
-  throw new Error("Missing CONTRACT_ADDRESS");
+  throw new Error("Missing DEPLOYED_CONTRACT_ADDRESS");
 }
 
 const privateKey = process.env.PRIVATE_KEY as string;
@@ -24,9 +24,9 @@ if (!privateKey) {
   throw new Error("Missing PRIVATE_KEY");
 }
 
-const rpcURL = process.env.ALCHEMY_RPC_URL as string;
+const rpcURL = process.env.RPC_URL as string;
 if (!rpcURL) {
-  throw new Error("Missing ALCHEMY_RPC_URL");
+  throw new Error("Missing RPC_URL");
 }
 
 const measure = async () => {

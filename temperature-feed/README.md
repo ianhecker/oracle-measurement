@@ -20,13 +20,17 @@ private key
 ```bash
 cat << EOF > .env
 AGGREGATOR_ID = 0x4c31f917ff41cbaad0b018771df374e665982505d3ff9b55b21529aedff5cefe
-ALCHEMY_RPC_URL = "https://arb-sepolia.g.alchemy.com/v2/!...API_KEY_HERE...!"
-DEPLOYED_CONTRACT_ADDRESS = 0xf07DcdD1f116B2f317EE91a36a540F976ECd4515
 CHAIN_ID = 42161
-SWITCHBOARD_CONTRACT_ADDRESS = 0xad9b8604b6b97187cde9e826cdeb7033c8c37198
+DEPLOYED_CONTRACT_ADDRESS = 0xf07DcdD1f116B2f317EE91a36a540F976ECd4515
 PRIVATE_KEY = 0x!...YOUR_KEY_HERE...!
+RPC_URL = "https://arb-sepolia.g.alchemy.com/v2/!...API_KEY_HERE...!"
+SWITCHBOARD_CONTRACT_ADDRESS = 0xad9b8604b6b97187cde9e826cdeb7033c8c37198
 EOF
 ```
+
+Alternate RPC URLs to Alchemy:
+- https://sepolia-rollup.arbitrum.io/rpc
+- https://mainnet-rollup.arbitrum.io/rpc
 
 You can use the existing configuration - but if you wish to deploy a contract,
 be sure to update `DEPLOYED_CONTRACT_ADDRESS` with the new address you receive

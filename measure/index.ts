@@ -37,7 +37,7 @@ const measure = async () => {
   const ABI = [
     "function getFeedData(bytes[] calldata updates) public payable",
     "function aggregatorId() public view returns (bytes32)",
-    "function latestPrice() public view returns (int256)",
+    "function latestTemperature() public view returns (int256)",
   ];
 
   const crossbar = new CrossbarClient(`https://crossbar.switchboard.xyz`);
@@ -52,11 +52,11 @@ const measure = async () => {
   });
 
   const tx = await contract.getFeedData(encoded);
-  const latestPrice = await contract.latestPrice();
+  const latestTemperature = await contract.latestTemperature();
 
   return {
     transactionHash: tx.hash,
-    latestUNIPriceInUSD: latestPrice,
+    latestTemperature: latestTemperature,
     aggregatorId: aggregatorId
   }
 };
@@ -90,8 +90,8 @@ const displayMeasurements = async () => {
   om.LogEthGasStats(tx.gasUsed, tx.gasFeeInGwei, tx.ethUsed);
   console.log();
 
-  om.Log(['On-Chain data:', 'Latest UNI/USD Price'])
-  om.LogUNIPriceInUSD(measurements.latestUNIPriceInUSD);
+  om.Log(['On-Chain data:', 'Latest Missoula, MT Temperature'])
+  om.LogTemperature(measurements.latestTemperature);
   console.log();
 
   const ethPriceInUSD = await om.FetchETHPriceInUSD(coinmarketcapAPIKey);

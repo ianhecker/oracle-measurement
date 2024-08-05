@@ -52,14 +52,14 @@ export class OracleMeasurement {
     this.Log([
       'Current Mainnet ETH/USD Price:', '$' + ethPriceInUSD.toFixed(2),
       '* ETH Used:', ethUsed.toFixed(10),
-      '=', "$" + ethCostInUSD.toFixed(2),
+      '=', "$" + ethCostInUSD.toFixed(4),
     ]);
   }
 
   LogTotalCostsInUSD(ethUsed: number, ethPriceInUSD: number) {
     const ethCostInUSD = ethUsed * ethPriceInUSD;
 
-    this.Log(['Total Cost in USD:', '$' + ethCostInUSD.toFixed(2)]);
+    this.Log(['Total Cost in USD:', '$' + ethCostInUSD.toFixed(4)]);
   }
 
   LogEthGasStats(gasUsed: number, gasFeeInGwei: number, ethUsed: number) {
@@ -80,6 +80,12 @@ export class OracleMeasurement {
     const divisor = BigInt(1000000000000000000)
     const USD = Number(n * 100n / divisor) / 100
     this.Log(['UNI/USD Price:', "$" + USD])
+  }
+
+  LogTemperature(n: bigint) {
+    const divisor = BigInt(1000000000000000000)
+    const temperature = Number(n * 100n / divisor) / 100
+    this.Log(['Temperature', temperature + " Farenheit"])
   }
 
   async FetchEthTxnGasStats(url: string, hash: string): Promise<TxnGasStats> {

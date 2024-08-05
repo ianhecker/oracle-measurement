@@ -2,15 +2,6 @@
 artifacts/
 bun.lockb
 cache/
-node_modules
-
-node_modules
-.env
-
-# Hardhat files
-/cache
-/artifacts
-
-# TypeChain files
-/typechain
-/typechain-types
+node_modules/
+typechain/
+typechain-types/

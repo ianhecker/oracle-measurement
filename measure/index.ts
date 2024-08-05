@@ -84,6 +84,9 @@ const displayMeasurements = async () => {
   om.LogTxnDuration(start, end);
   console.log();
 
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+  await sleep(1000);
+
   const tx = await om.FetchEthTxnGasStats(rpcURL, measurements.transactionHash);
 
   om.LogTransactionHash(measurements.transactionHash);

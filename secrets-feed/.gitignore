@@ -1,0 +1,7 @@
+.env
+artifacts/
+bun.lockb
+cache/
+node_modules/
+typechain/
+typechain-types/

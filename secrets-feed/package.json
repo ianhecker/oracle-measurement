@@ -1,0 +1,15 @@
+{
+  "name": "secrets-feed",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@switchboard-xyz/common": "^2.4.4",
+    "@switchboard-xyz/on-demand": "^1.2.16"
+  }
+}

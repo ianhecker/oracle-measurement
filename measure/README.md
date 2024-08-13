@@ -19,11 +19,11 @@ private key
 
 ```bash
 cat << EOF > .env
-CHAIN_ID = 421614
+CHAIN_ID = 42161
 COINMARKETCAP_API_KEY = "!...API_KEY_HERE...!"
-DEPLOYED_CONTRACT_ADDRESS = 0x42E12a6945ab87C3AEeE1601cE9c40da5D43D92A
+DEPLOYED_CONTRACT_ADDRESS = 0x0739C2739EfC27f58c94bcc85F2c0e4D7Eb8e29d
 PRIVATE_KEY = 0x!...YOUR_KEY_HERE...!
-RPC_URL = "https://arb-sepolia.g.alchemy.com/v2/!...API_KEY_HERE...!"
+RPC_URL = "https://arb-mainnet.g.alchemy.com/v2/!...API_KEY_HERE...!"
 EOF
 ```
 

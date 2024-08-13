@@ -74,7 +74,7 @@ const displayMeasurements = async () => {
   let om = new OracleMeasurement();
 
   om.Log(['Oracle:', 'Switchboard Data Feed logged On-Chain w/ Smart Contract']);
-  om.Log(['Data Feed:', 'Current UNI/USD Price']);
+  om.Log(['Data Feed:', 'Current Missoula Temperature']);
   om.Log(['Contract Address:', contractAddress]);
   om.Log(['Aggregator Feed ID:', measurements.aggregatorId]);
   om.LogNetwork(chainId);

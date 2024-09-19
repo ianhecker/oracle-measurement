@@ -11,15 +11,19 @@ interface IStorkVerifierContract {
         bytes32 valueComputeAlgHash,
         bytes32 r,
         bytes32 s,
-        uint8 v,
+        uint8 v
     ) external view returns (bool);
 }
 
-contract BlockyVerifier {
+contract BlockyVerifierEmitter {
     IStorkVerifierContract private storkVerifierContract;
 
+    event Verified(bool verified);
+
     constructor(address _storkVerifierContractAddress) {
-        storkVerifierContract = IStorkVerifierContract(_storkVerifierContractAddress);
+        storkVerifierContract = IStorkVerifierContract(
+            _storkVerifierContractAddress
+        );
     }
 
     function verifyStorkSignatureV1(
@@ -31,9 +35,9 @@ contract BlockyVerifier {
         bytes32 valueComputeAlgHash,
         bytes32 r,
         bytes32 s,
-        uint8 v,
-    ) public view returns (bool) {
-        return storkVerifierContract.verifyStorkSignatureV1(
+        uint8 v
+    ) public returns (bool) {
+        bool verified = storkVerifierContract.verifyStorkSignatureV1(
             storkPubKey,
             id,
             recvTime,
@@ -42,7 +46,11 @@ contract BlockyVerifier {
             valueComputeAlgHash,
             r,
             s,
-            v,
+            v
         );
+
+        emit Verified(verified);
+
+        return verified;
     }
 }

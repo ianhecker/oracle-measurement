@@ -1,0 +1,95 @@
+{
+  "type": "oracle_prices",
+  "trace_id": "2e71ccb8-0314-4917-91ed-23bae434ddc5",
+  "data": {
+    "ETHUSD": {
+      "timestamp": 1726698210096984730,
+      "asset_id": "ETHUSD",
+      "signature_type": "evm",
+      "trigger": "clock",
+      "price": "2338223787593749000000",
+      "stork_signed_price": {
+        "public_key": "0x0a803F9b1CCe32e2773e0d2e98b37E0775cA5d44",
+        "encoded_asset_id": "0x59102b37de83bdda9f38ac8254e596f0d9ac61d2035c07936675e87342817160",
+        "price": "2338223787593749000000",
+        "timestamped_signature": {
+          "signature": {
+            "r": "0x08c3552cba291ad4054a714c51d35e2f10f07088eeec035533f3fc2f8ac858dd",
+            "s": "0x557a28a183c1562799d9790e2763838ba7e0aefaf4e815d1a9e8a153b7517876",
+            "v": "0x1c"
+          },
+          "timestamp": 1726698210131854761,
+          "msg_hash": "0xc3eaf9d17a9005fa108f43e15620691e0ac7f7debc654d832f148dbe26af9953"
+        },
+        "publisher_merkle_root": "0xfaf22eda9c0759e20d13693625682853db2c3a666d0b4ce8aa61fb26519bc7c1",
+        "calculation_alg": {
+          "type": "median",
+          "version": "v1",
+          "checksum": "9be7e9f9ed459417d96112a7467bd0b27575a2c7847195c68f805b70ce1795ba"
+        }
+      },
+      "signed_prices": [
+        {
+          "publisher_key": "0x51aa9e9c781f85a2c0636a835eb80114c4553098",
+          "external_asset_id": "ETHUSD",
+          "signature_type": "evm",
+          "price": "2338172675187500000000",
+          "timestamped_signature": {
+            "signature": {
+              "r": "0x41f9765206b4787870390c74aaaf9b9500e8658ee14fe301ff6162a06049cfe2",
+              "s": "0x514ed809d1fc933b30ddae00b1e4dba00e9fda22719a9328416eddcec5a3d21b",
+              "v": "0x1c"
+            },
+            "timestamp": 1726698210096984730,
+            "msg_hash": "0x36561d8306b2ee9d56319e65b48eec1d410cd38e7a1da36c51efb989bc211e0e"
+          }
+        },
+        {
+          "publisher_key": "0xb91c675e0c0ecfd4c16f97b110376c3c224061d8",
+          "external_asset_id": "ETHUSD",
+          "signature_type": "evm",
+          "price": "2338371063000000000000",
+          "timestamped_signature": {
+            "signature": {
+              "r": "0xcfb511767ed7922fcf49022977cdb4384b1f52f4446c24340e487e1bf414428f",
+              "s": "0x1250b954de81998890c0de39310e824902c97d5942c2d45f2e1ea6b3860eed73",
+              "v": "0x1b"
+            },
+            "timestamp": 1726698209988000000,
+            "msg_hash": "0xa4b33811c6fd708705456f8f2213d1d2cd7e45cae9e50d702eda07347b626eff"
+          }
+        },
+        {
+          "publisher_key": "0xF024A9AA110798e5CD0d698FBA6523113Eaa7FB2",
+          "external_asset_id": "ETHUSD",
+          "signature_type": "evm",
+          "price": "2338172675187500000000",
+          "timestamped_signature": {
+            "signature": {
+              "r": "0x188a04ff08769db4d20b4dad6296121f7fccec6f43185480102695cc1fe9b003",
+              "s": "0x377ee0ee00531cc111210c705ca96771b95dafb3d1ac431d97646348fe55acd4",
+              "v": "0x1c"
+            },
+            "timestamp": 1726698210096984730,
+            "msg_hash": "0x5e6a32db4bd9c5721b6cf524f2ff99bf49f327a5b0c47b95c4f1501bfc9a60d8"
+          }
+        },
+        {
+          "publisher_key": "0xa3c28d4e939ce2927d3b29b7bf53d3aeaab09350",
+          "external_asset_id": "ETHUSD",
+          "signature_type": "evm",
+          "price": "2338274899999999000000",
+          "timestamped_signature": {
+            "signature": {
+              "r": "0xce1518f812dfa52e8774e4c89e596d0d972722791fa0eeba2ed6fed2c4a934de",
+              "s": "0x2afdf45e8c8c5b1ee84a929d20b59456abdd27e3a68546c5e936709326f5663a",
+              "v": "0x1b"
+            },
+            "timestamp": 1726698209988000000,
+            "msg_hash": "0xf912d4580bafb49745caed7f8f179df487d4311fd6583b4d8427a2c1d39a6c22"
+          }
+        }
+      ]
+    }
+  }
+}

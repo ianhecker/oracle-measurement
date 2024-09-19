@@ -42,7 +42,7 @@ be sure to update `DEPLOYED_CONTRACT_ADDRESS` with the new address you receive
 	* To deploy a contract
 
 	```bash
-	npx hardhat ignition deploy ./ignition/modules/deployVerify.ts --network holesky
+	npx hardhat ignition deploy ./ignition/modules/deployBlockyVerifier.ts --network holesky
 	```
 
 	* Add your new contract address to the `.env` file

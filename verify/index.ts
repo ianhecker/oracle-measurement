@@ -1,10 +1,14 @@
-// import { CrossbarClient } from "@switchboard-xyz/on-demand";
 import * as ethers from "ethers";
 import * as fs from "fs";
-
+import { OracleMeasurement } from "./oracle-measurements";
 
 const chainId = process.env.CHAIN_ID as string;
 if (!chainId) {
+  throw new Error("Missing CHAIN_ID");
+}
+
+const coinmarketcapAPIKey = process.env.COINMARKETCAP_API_KEY as string;
+if (!coinmarketcapAPIKey) {
   throw new Error("Missing CHAIN_ID");
 }
 
@@ -23,29 +27,87 @@ if (!rpcURL) {
   throw new Error("Missing RPC_URL");
 }
 
-const provider = new ethers.JsonRpcProvider(rpcURL);
+const transact = async () => {
 
-const signerWithProvider = new ethers.Wallet(privateKey, provider);
+  const provider = new ethers.JsonRpcProvider(rpcURL);
 
-// const ABI = [
-//   "function getFeedData(bytes[] calldata updates) public payable",
-//   "function aggregatorId() public view returns (bytes32)",
-//   "function latestTemperature() public view returns (int256)",
-// ];
+  const signerWithProvider = new ethers.Wallet(privateKey, provider);
 
-// const crossbar = new CrossbarClient(`https://crossbar.switchboard.xyz`);
+  const ABI = [
+    "function verifyStorkSignatureV1(address storkPubKey, bytes32 id, uint256 recvTime, int256 quantizedValue, bytes32 publisherMerkleRoot, bytes32 valueComputeAlgHash, bytes32 r, bytes32 s, uint8 v) public returns (bool)",
+    "event Verified(bool verified)",
+  ];
 
-const exampleContract = new ethers.Contract(address, ABI, signerWithProvider);
+  const contract = new ethers.Contract(address, ABI, signerWithProvider);
 
-// const { encoded } = await crossbar.fetchEVMResults({
-//   chainId: chainId,
-//   aggregatorIds: [await exampleContract.aggregatorId()],
-// });
+  const data = fs.readFileSync('wscat.data', 'utf8');
 
-const tx = await exampleContract.verifyStorkSignatureV1(encoded);
+  const line = data.split('\n');
 
-console.log(tx);
+  const STORK_PUB_KEY = line[0];
+  const ID = line[1];
+  const RECV_TIME = line[2];
+  const QUANTIZED_VALUE = line[3];
+  const PUBLISHER_MERKLE_ROOT = line[4];
+  const VALUE_COMPUTE_ALG_HASH = "0x" + line[5];
+  const R = line[6];
+  const S = line[7];
+  const V = line[8];
 
-console.log("Transaction completed!");
+  let om = new OracleMeasurement();
+  const ethPriceInUSD = await om.FetchETHPriceInUSD(coinmarketcapAPIKey);
 
-console.log("Value stored in contract: ", await exampleContract.verifyResult());
+  const tx = await contract.verifyStorkSignatureV1(
+    STORK_PUB_KEY,
+    ID,
+    RECV_TIME,
+    QUANTIZED_VALUE,
+    PUBLISHER_MERKLE_ROOT,
+    VALUE_COMPUTE_ALG_HASH,
+    R,
+    S,
+    V,
+  );
+
+  return {
+    transactionHash: tx.hash,
+    ethPriceInUSD: ethPriceInUSD,
+  }
+}
+
+const displayMeasurements = async () => {
+  const start = performance.now();
+
+  const results = await transact().catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
+
+  const end = performance.now();
+
+  let om = new OracleMeasurement();
+
+  const receipt = await om.PollForReceipt(rpcURL, results.transactionHash);
+
+  if (!receipt) {
+    console.error("Transaction receipt not found.");
+    return;
+  }
+
+  om.Log(['Oracle:', 'Stork Verifier Contract - logged On-Chain w/ Custom Smart Contract']);
+  om.Log(['Contract Address:', address]);
+  om.LogNetwork(chainId);
+  console.log();
+
+  om.LogDateAndTime();
+  om.LogTxnDuration(start, end);
+  console.log();
+
+  om.LogTransactionHash(results.transactionHash);
+  om.LogEthGasStats(receipt.gasUsed, receipt.gasPrice, results.ethPriceInUSD);
+};
+
+displayMeasurements().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});

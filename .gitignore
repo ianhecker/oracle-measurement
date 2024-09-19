@@ -1,5 +1,9 @@
-.env*
-
-node_modules/*
-
+.env
+artifacts/
+build-info
+bun.lockb
+cache/
+ignition/
+node_modules/
 package-lock.json
+typechain-types/

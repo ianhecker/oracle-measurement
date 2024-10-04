@@ -105,6 +105,16 @@ const displayMeasurements = async () => {
 
   om.LogTransactionHash(results.transactionHash);
   om.LogEthGasStats(receipt.gasUsed, receipt.gasPrice, results.ethPriceInUSD);
+
+  const { gasPriceInGwei, gasFeeInEther, ethCostInUSD } = om.computeGasStats(
+    receipt.gasUsed,
+    receipt.gasPrice,
+    results.ethPriceInUSD,
+  );
+
+  const elapsed = om.computeTxnDuration(start, end);
+
+  om.LogCSV(results.transactionHash, new Date(), elapsed, gasFeeInEther, results.ethPriceInUSD);
 };
 
 displayMeasurements().catch((e) => {

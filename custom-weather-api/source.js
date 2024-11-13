@@ -1,7 +1,7 @@
 const location = args[0];
 const units = args[1];
 
-if (!secrets.apiKey) {
+if (!secrets.apikey) {
   throw Error(
     "TOMORROW_IO_API_KEY environment variable not set"
   );
@@ -18,7 +18,7 @@ const tomorrowIORequest = Functions.makeHttpRequest({
   params: {
     location: location,
     units: units,
-    apikey: secrets.apiKey,
+    apikey: secrets.apikey,
   },
 });
 
@@ -34,18 +34,12 @@ if (data.Response === "Error") {
   throw Error(`Functional error. Read message: ${data.Message}`);
 }
 
-const {
-  temperature: temperature,
-  windSpeed: windSpeed,
-  humidity: humidity,
-} = data["data"]["values"];
+const { temperature: temperature } = data["data"]["values"];
 
 const result = {
   location: location,
   units: units,
   temperature: temperature,
-  windSpeed: windSpeed.toFixed(2),
-  humidity: humidity,
 };
 
 return Functions.encodeString(JSON.stringify(result));

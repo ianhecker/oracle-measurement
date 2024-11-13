@@ -12,8 +12,7 @@ const functionsConsumerAbi = require("../abi/functionsClient.json");
 const ethers = require("ethers");
 const { trace } = require("console");
 
-const secureEnv = require('secure-env');
-global.env = secureEnv({ path: '.env.chainlink.enc', secret: 'chainlink' });
+require('dotenv').config();
 
 const GREEN = "\u001b[32m";
 const RESET = "\u001b[0m";
@@ -26,10 +25,10 @@ function colorKeyValuePairs(prefixes, values) {
   return printString;
 }
 
-const fmt = colorKeyValuePairs
+const fmt = colorKeyValuePairs;
 
 const consumerAddress = "0x08D51E9C1d854a2c0d793C6e507d5F85b8950040";
-const subscriptionId = 3176;
+const subscriptionId = 3710;
 const makeRequestSepolia = async () => {
 
   console.log('');
@@ -38,8 +37,8 @@ const makeRequestSepolia = async () => {
   console.log('The current weather forecast for Missoula, MT will be fetched');
   console.log('Data will include:\n  + Temperature\n  + Wind Speed\n  + Humidity');
   console.log('');
-  console.log(fmt(['Chainlink Functions Tutorial:'], ['\'Using User-hosted Secrets in Requests\'']))
-  console.log(fmt(['URL:'], ['https://docs.chain.link/chainlink-functions/tutorials/api-use-secrets-offchain']))
+  console.log(fmt(['Chainlink Functions Tutorial:'], ['\'Using User-hosted Secrets in Requests\'']));
+  console.log(fmt(['URL:'], ['https://docs.chain.link/chainlink-functions/tutorials/api-use-secrets-offchain']));
   console.log('');
 
   const routerAddress = "0xb83E47C2bC239B3bf370bc41e1459A34b41238D0";
@@ -52,17 +51,19 @@ const makeRequestSepolia = async () => {
     .toString();
 
   const args = ["Missoula", "imperial"];
-  const secrets = { apiKey: global.env.TOMORROW_IO_API_KEY };
+  const secrets = process.env.TOMORROW_IO_API_KEY;
+
+
   const secretsUrls = [
     "https://chainlink-functions-offchain.s3.amazonaws.com/tomorrow-io.json",
   ]; const gasLimit = 300000;
 
-  const privateKey = global.env.PRIVATE_KEY; if (!privateKey)
-    throw new Error(
-      "private key not provided - check your environment variables"
-    );
+  const privateKey = process.env.PRIVATE_KEY;
+  if (!privateKey) {
+    throw new Error("Missing PRIVATE_KEY");
+  }
 
-  const rpcUrl = global.env.ETHEREUM_SEPOLIA_RPC_URL;
+  const rpcUrl = process.env.ETHEREUM_SEPOLIA_RPC_URL;
   if (!rpcUrl)
     throw new Error(`rpcUrl not provided  - check your environment variables`);
 
@@ -70,14 +71,15 @@ const makeRequestSepolia = async () => {
 
   const wallet = new ethers.Wallet(privateKey);
   const signer = wallet.connect(provider);
+
   console.log("Estimate request costs...");
+
   const subscriptionManager = new SubscriptionManager({
     signer: signer,
     linkTokenAddress: linkTokenAddress,
     functionsRouterAddress: routerAddress,
   });
   await subscriptionManager.initialize();
-
 
   const gasPriceWei = await signer.getGasPrice();
   const estimatedCostInJuels =
@@ -172,7 +174,7 @@ const makeRequestSepolia = async () => {
   return {
     transactionHash: transaction.hash,
     linkCost: ethers.utils.formatEther(response.totalCostInJuels)
-  }
+  };
 };
 
 const makeRequestAndOutput = async () => {
@@ -192,7 +194,7 @@ const makeRequestAndOutput = async () => {
   const milliseconds = Math.floor(ms % 1000);
 
   const now = new Date();
-  console.log(fmt(['Time:'], [now.toLocaleString('en-US', { timeZone: 'America/Denver' }) + ' MST']))
+  console.log(fmt(['Time:'], [now.toLocaleString('en-US', { timeZone: 'America/Denver' }) + ' MST']));
   console.log(fmt(['Chainlink Functions Time Elapsed:'], [minutes + "m" + seconds + "." + milliseconds + 's']));
   console.log('');
 
@@ -214,21 +216,21 @@ const makeRequestAndOutput = async () => {
 
   const totalCostInUSD = ethCostInUSD + linkCostInUSD;
 
-  console.log(fmt(['Ethereum Txn Hash:'], ['0xb8e790fb809ebf0f22941eda1a67728f1f9ee5dc843bd87db03f3d7ba60833f6']))
-  console.log(fmt(['Ethereum Network:'], ["Sepolia"]))
-  console.log(fmt(['Gas Used:'], [gasUsed]))
-  console.log(fmt(['Gas Price:'], [effectiveGasPrice + ' Gwei']))
-  console.log(fmt(['ETH Used:'], [ethUsed.toFixed(10)]))
-  console.log(fmt(['LINK Used:'], [linkUsed]))
-  console.log('')
+  console.log(fmt(['Ethereum Txn Hash:'], ['0xb8e790fb809ebf0f22941eda1a67728f1f9ee5dc843bd87db03f3d7ba60833f6']));
+  console.log(fmt(['Ethereum Network:'], ["Sepolia"]));
+  console.log(fmt(['Gas Used:'], [gasUsed]));
+  console.log(fmt(['Gas Price:'], [effectiveGasPrice + ' Gwei']));
+  console.log(fmt(['ETH Used:'], [ethUsed.toFixed(10)]));
+  console.log(fmt(['LINK Used:'], [linkUsed]));
+  console.log('');
 
-  console.log(fmt(['Current Mainnet ETH/USD Price:', '* ETH Used:', '='], ['$' + ethPriceInUSD.toFixed(2), ethUsed.toFixed(10), "$" + ethCostInUSD.toFixed(2)]))
-  console.log(fmt(['Current LINK/USD Price:', '* LINK Used:', '='], ['$' + linkPriceInUSD.toFixed(2), linkUsed, '$' + linkCostInUSD.toFixed(2)]))
-  console.log('')
+  console.log(fmt(['Current Mainnet ETH/USD Price:', '* ETH Used:', '='], ['$' + ethPriceInUSD.toFixed(2), ethUsed.toFixed(10), "$" + ethCostInUSD.toFixed(2)]));
+  console.log(fmt(['Current LINK/USD Price:', '* LINK Used:', '='], ['$' + linkPriceInUSD.toFixed(2), linkUsed, '$' + linkCostInUSD.toFixed(2)]));
+  console.log('');
 
-  console.log(fmt(['Total Cost in USD:', '+', '='], ['$' + ethCostInUSD.toFixed(2), '$' + linkCostInUSD.toFixed(2), '$' + totalCostInUSD.toFixed(2)]))
-  console.log('')
-}
+  console.log(fmt(['Total Cost in USD:', '+', '='], ['$' + ethCostInUSD.toFixed(2), '$' + linkCostInUSD.toFixed(2), '$' + totalCostInUSD.toFixed(2)]));
+  console.log('');
+};
 
 makeRequestAndOutput().catch((e) => {
   console.error(e);
@@ -236,7 +238,7 @@ makeRequestAndOutput().catch((e) => {
 });
 
 async function fetchEthereumTransaction(hash) {
-  const url = `https://eth-sepolia.g.alchemy.com/v2/${global.env.ALCHEMY_API_KEY}`;
+  const url = `https://eth-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`;
   const body = {
     id: 1,
     jsonrpc: '2.0',
@@ -283,7 +285,7 @@ async function fetchETHPriceInUSD() {
   const url = 'https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest';
   const symbol = 'ETH';
   const convert = 'USD';
-  const apiKey = global.env.COINMARKETCAP_API_KEY;
+  const apiKey = process.env.COINMARKETCAP_API_KEY;
   const fullUrl = `${url}?CMC_PRO_API_KEY=${apiKey}&symbol=${symbol}&convert=${convert}`;
 
   try {
@@ -311,7 +313,7 @@ async function fetchETHPriceInUSD() {
 async function fetchLINKPriceInUSD() {
   const url = 'https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest';
   const symbol = 'LINK';
-  const apiKey = global.env.COINMARKETCAP_API_KEY;
+  const apiKey = process.env.COINMARKETCAP_API_KEY;
   const fullUrl = `${url}?CMC_PRO_API_KEY=${apiKey}&symbol=${symbol}`;
 
   try {

@@ -1,6 +1,6 @@
 # Pyth - Contract
 
-This repo covers all code & steps from tutorials:
+This folder covers the code from:
 - https://docs.pyth.network/price-feeds/create-your-first-pyth-app/evm/part-1
 
 ## Setup

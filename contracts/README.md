@@ -1,66 +1,45 @@
-## Foundry
+# Pyth
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+https://docs.pyth.network/price-feeds/create-your-first-pyth-app/evm/part-1
 
-Foundry consists of:
+## Setup
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
-
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
+```bash
+forge init
+rm -r src/* test/*
 ```
 
-### Test
-
-```shell
-$ forge test
+```bash
+bun init
+bun install @pythnetwork/pyth-sdk-solidity
 ```
 
-### Format
-
-```shell
-$ forge fmt
+```bash
+echo '@pythnetwork/pyth-sdk-solidity/=node_modules/@pythnetwork/pyth-sdk-solidity' > remappings.txt
 ```
 
-### Gas Snapshots
-
-```shell
-$ forge snapshot
+compile contract
+```bash
+forge build
 ```
 
-### Anvil
-
-```shell
-$ anvil
+```bash
 ```
 
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+```bash
 ```
 
-### Cast
-
-```shell
-$ cast <subcommand>
+```bash
 ```
 
-### Help
+```bash
+```
 
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+```bash
+```
+
+```bash
+```
+
+```bash
 ```

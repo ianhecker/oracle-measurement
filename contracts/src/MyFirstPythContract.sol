@@ -34,6 +34,13 @@ contract MyFirstPythContract {
         }
     }
 
+    function updateAndMint(bytes[] calldata pythPriceUpdate) external payable {
+        uint updateFee = pyth.getUpdateFee(pythPriceUpdate);
+        pyth.updatePriceFeeds{value: updateFee}(pythPriceUpdate);
+
+        mint();
+    }
+
     // Error raised if the payment is not sufficient
     error InsufficientFee();
 }

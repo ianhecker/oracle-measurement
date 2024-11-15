@@ -15,6 +15,8 @@ bun install @pythnetwork/pyth-sdk-solidity
 echo '@pythnetwork/pyth-sdk-solidity/=node_modules/@pythnetwork/pyth-sdk-solidity' > remappings.txt
 ```
 
+## Smart Contract
+
 Compile contract
 ```bash
 forge build

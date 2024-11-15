@@ -133,7 +133,20 @@ cast send \
   [0x`cat price_update.txt`] | jq .
 ```
 
+You've now pushed the feed, and logged it to chain!
+
 ## Fetch Price Feed from Contract
+
+An alternate way to interact with the smart contract
+
+### Configure Chain
+
+Edit the chain import in `/app/src/client.ts` to the correct chain
+```typescript
+// import { sepolia as chain } from "viem/chains";
+import { base as chain } from "viem/chains";
+// import { myNework as chain } from "viem/chains";
+```
 
 ### Run App
 
@@ -141,3 +154,5 @@ cast send \
 cd .. && cd app/
 bun run src/mintNft.ts
 ```
+
+You've now pushed the feed, and logged it to chain!

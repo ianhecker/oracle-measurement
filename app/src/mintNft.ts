@@ -48,7 +48,6 @@ export const abi = [
 
 async function run() {
   const contract = getContract({
-    // address: process.env["DEPLOYMENT_ADDRESS"] as any,
     address: process.env["DEPLOYMENT_ADDRESS"] as any,
     abi: abi,
     client: {
